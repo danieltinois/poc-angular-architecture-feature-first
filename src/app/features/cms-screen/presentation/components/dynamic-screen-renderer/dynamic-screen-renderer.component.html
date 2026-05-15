@@ -1,0 +1,21 @@
+<div class="screen">
+  @for (block of blocks; track $index) {
+    @switch (block.type) {
+      @case ("hero") {
+        <poc-hero-block [props]="asHeroProps(block)" />
+      }
+      @case ("text") {
+        <poc-text-block [props]="asTextProps(block)" />
+      }
+      @case ("card") {
+        <poc-card-block [props]="asCardProps(block)" />
+      }
+      @case ("button") {
+        <poc-button-block [props]="asButtonProps(block)" />
+      }
+      @case ("video") {
+        <poc-video-block [props]="asVideoProps(block)" />
+      }
+    }
+  }
+</div>

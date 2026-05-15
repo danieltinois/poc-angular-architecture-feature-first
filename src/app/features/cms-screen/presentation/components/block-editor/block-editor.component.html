@@ -1,0 +1,101 @@
+@if (screen; as currentScreen) {
+  <div class="block-editor">
+    <section class="screen-fields">
+      <label>
+        <span>Screen</span>
+        <input
+          type="text"
+          [value]="currentScreen.screen"
+          (input)="updateScreenField('screen', $event)"
+        />
+      </label>
+
+      <label>
+        <span>Version</span>
+        <input
+          type="text"
+          [value]="currentScreen.version"
+          (input)="updateScreenField('version', $event)"
+        />
+      </label>
+    </section>
+
+    <section class="add-block">
+      <label>
+        <span>Novo bloco</span>
+        <select [value]="selectedBlockType" (change)="setSelectedBlockType($event)">
+          @for (block of blockCatalog; track block.type) {
+            <option [value]="block.type">{{ block.label }}</option>
+          }
+        </select>
+      </label>
+      <poc-ui-button (clicked)="addBlockClick.emit()">Adicionar</poc-ui-button>
+    </section>
+
+    <section class="block-list" (dragend)="blockDragEnd.emit()">
+      @for (block of currentScreen.blocks; track $index; let index = $index) {
+        <article
+          class="block-card"
+          [class.block-card-dragging]="draggedBlockIndex === index"
+          [class.block-card-drop-target]="dragOverBlockIndex === index && draggedBlockIndex !== index"
+          (dragover)="enterBlockDropZone(index, $event)"
+          (drop)="dropBlock(index, $event)"
+        >
+          <header class="block-card-header">
+            <div class="block-title-row">
+              <span
+                class="drag-handle"
+                draggable="true"
+                title="Arrastar bloco"
+                aria-label="Arrastar bloco"
+                (dragstart)="startBlockDrag(index, $event)"
+              >☰</span>
+              <span class="block-type-chip">{{ blockLabel(block) }}</span>
+            </div>
+            <div class="block-heading">
+              <p class="block-index">Bloco {{ index + 1 }}</p>
+              <h3>{{ blockDescription(block) }}</h3>
+            </div>
+            <div class="block-actions">
+              <poc-ui-button variant="danger" (clicked)="removeBlockClick.emit(index)">Remover</poc-ui-button>
+            </div>
+          </header>
+
+          <div class="block-fields">
+            @for (field of fieldsFor(block); track field.path) {
+              <label>
+                <span>{{ field.label }}</span>
+
+                @if (field.kind === "textarea") {
+                  <textarea
+                    [value]="fieldValue(block, field)"
+                    (input)="updateBlockField(index, field, $event)"
+                  ></textarea>
+                }
+
+                @if (field.kind === "select") {
+                  <select
+                    [value]="fieldValue(block, field)"
+                    (change)="updateBlockField(index, field, $event)"
+                  >
+                    @for (option of field.options; track option) {
+                      <option [value]="option">{{ option }}</option>
+                    }
+                  </select>
+                }
+
+                @if (field.kind === "text" || field.kind === "url") {
+                  <input
+                    [type]="field.kind === 'url' ? 'url' : 'text'"
+                    [value]="fieldValue(block, field)"
+                    (input)="updateBlockField(index, field, $event)"
+                  />
+                }
+              </label>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  </div>
+}

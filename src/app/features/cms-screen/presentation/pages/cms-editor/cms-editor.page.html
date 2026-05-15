@@ -1,0 +1,59 @@
+<main class="shell">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">POC Server Driven UI</p>
+      <h1>CMS Angular Feature First</h1>
+    </div>
+    <poc-ui-button variant="ghost" (clicked)="loadScreen()">Recarregar API</poc-ui-button>
+  </header>
+
+  <section class="workspace">
+    <article class="panel editor-panel">
+      <div class="panel-header">
+        <div>
+          <h2>Editor de blocos</h2>
+          <p class="panel-caption">Feature cms-screen em Clean Architecture.</p>
+        </div>
+        <div class="actions">
+          <poc-ui-button variant="secondary" (clicked)="validateBlocks()">Validar tela</poc-ui-button>
+          <poc-ui-button (clicked)="publish()">Publicar</poc-ui-button>
+        </div>
+      </div>
+
+      <poc-block-editor
+        [screen]="screenSnapshot()"
+        [blockCatalog]="blockCatalog"
+        [selectedBlockType]="store.selectedBlockType()"
+        [draggedBlockIndex]="store.draggedBlockIndex()"
+        [dragOverBlockIndex]="store.dragOverBlockIndex()"
+        (screenFieldChange)="updateScreenField($event)"
+        (selectedBlockTypeChange)="setSelectedBlockType($event)"
+        (addBlockClick)="addBlock()"
+        (removeBlockClick)="removeBlock($event)"
+        (blockFieldChange)="updateBlockField($event)"
+        (blockDragStart)="startBlockDrag($event)"
+        (blockDragEnter)="enterBlockDropZone($event)"
+        (blockDrop)="dropBlock($event)"
+        (blockDragEnd)="clearDragState()"
+      />
+
+      <p class="status" [class.status-error]="store.isError()">{{ store.status() }}</p>
+    </article>
+
+    <article class="panel preview-panel">
+      <div class="panel-header">
+        <div>
+          <h2>Preview Angular</h2>
+          <p class="panel-caption">Renderizacao web usando o mesmo contrato.</p>
+        </div>
+        <span class="badge">Presentation dumb component</span>
+      </div>
+
+      <div class="phone-preview">
+        @if (screenSnapshot(); as currentScreen) {
+          <poc-dynamic-screen-renderer [blocks]="currentScreen.blocks" />
+        }
+      </div>
+    </article>
+  </section>
+</main>
