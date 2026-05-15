@@ -1,6 +1,6 @@
 # CMS Angular Feature First
 
-CMS didatico para editar uma tela Server Driven UI por blocos, refeito em uma estrutura feature-first inspirada no guia `arquitetura_CMS_v2.docx`.
+CMS didatico para editar uma tela Server Driven UI por blocos, refeito em uma estrutura feature-first
 
 ## Como rodar
 
