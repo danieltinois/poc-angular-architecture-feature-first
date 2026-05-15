@@ -4,7 +4,7 @@ CMS didatico para editar uma tela Server Driven UI por blocos, refeito em uma es
 
 ## Como rodar
 
-Na raiz do monorepo da poc-server-driven-ui substitua o cms-angular por angular-architecture-feature-first, e em terminais separados:
+Na raiz do monorepo da [poc-server-driven-ui](https://github.com/danieltinois/poc-serven-driven-ui) substitua o cms-angular por angular-architecture-feature-first, e em terminais separados:
 
 ```bash
 pnpm dev:api
